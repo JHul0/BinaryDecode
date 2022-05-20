@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "config-yml": "^0.10.3",
+    "yaml": "^2.1.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}

@@ -1,0 +1,54 @@
+# this is where packet structures are stored
+# the packet structure is as follows:
+################################################################
+# packetName:
+#   fields:
+#     fieldName:
+#       fieldDataType: <type>
+#       bytes: <bytes>
+#     otherFieldName:
+#       otherFieldDataType: <type>
+#       bytes: <bytes>
+################################################################
+
+header:
+  fields:
+    type:
+      type: int 
+      size: 1
+    length: 
+      type: int
+      size: 1
+    id: 
+      type: macId
+      size: 6
+    timestamp:
+      type: timestamp
+      size: 4
+    batteryLevel:
+      type: int
+      size: 1
+    rsrq:
+      type: rsr
+      size: 1
+    rsrp:
+      type: rsr
+      size: 1
+
+heartbeat:
+  fields:
+    gpsw:
+      type: float
+      size: 4
+    gpsn:
+      type: float
+      size: 4
+    config:
+      type: unknown
+      size: 1
+    status:
+      type: char
+      size: 1
+    checksum:
+      type: short 
+      size: 2
