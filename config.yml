@@ -52,3 +52,75 @@ heartbeat:
     checksum:
       type: short 
       size: 2
+
+action:
+  fields:
+    deviceType:
+      type: int 
+      size: 1
+    manufacturer: 
+      type: int
+      size: 1
+    LTEversion: 
+      type: string
+      size: 6 #this needs to be variable length
+    switchStatus:
+      type: int
+      size: 1
+    state:
+      type: unknown
+      size: 1
+    IMEI:
+      type: string
+      size: 16
+    checksum:
+      type: short
+      size: 2
+
+devconfig:
+  fields:
+    deviceType:
+      type: int 
+      size: 1
+    manufacturer: 
+      type: int
+      size: 1
+    LTEversion: 
+      type: string
+      size: 6 #this needs to be variable length
+    switchStatus:
+      type: int
+      size: 1
+    state:
+      type: unknown
+      size: 1
+    IMEI:
+      type: string
+      size: 16
+    checksum:
+      type: short
+      size: 2
+
+acceleration:
+  #todo:
+
+userconfig:
+  #to be defined
+
+updatefw:
+  fields:
+    type:
+      type: int 
+      size: 1
+    version:
+      type: int
+      size: 1
+    size:
+      type: long #todo implement this type
+      size: 8
+    url:
+      type: string
+      size: x #todo replace x with url size or apply variable size
+    checksum:
+      type: short
+      size: 2

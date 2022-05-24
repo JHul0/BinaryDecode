@@ -9,10 +9,21 @@ exports.handler = async (event) => {
 };
 
 class decoder{
+    constructor() {
+        this.packetStruct = []
+        this.packetStruct[0] = config.header
+        this.packetStruct[1] = config.heartbeat
+        this.packetStruct[2] = config.action
+        this.packetStruct[3] = config.devconfig
+        this.packetStruct[4] = config.acceleration
+        this.packetStruct[5] = config.userconfig
+        this.packetStruct[6] = config.updatefw
+    }
+
     decodePacket(base64Packet, headerConfig){
         let hexPacket = this.convertToHex(base64Packet)
-        let [header, remainder] = this.decode(hexPacket, headerConfig)
-        let [dataPacket, notAvailable] = this.decode(remainder, config.heartbeat)
+        let [header, remainder] = this.decode(hexPacket, this.packetStruct[0])
+        let [dataPacket, notAvailable] = this.decode(remainder, this.packetStruct[header["type"]])
         header['heartbeat'] = dataPacket
         return header
     }
