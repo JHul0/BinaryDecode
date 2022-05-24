@@ -111,7 +111,6 @@ class decoder{
             i++
             position = finalPosition
         }
-        console.log(result)
         return [result, hexPacket.slice(position, hexPacket.length)]
     }
 
@@ -138,8 +137,8 @@ class decoder{
 }
 
 //uncomment for local testing
-let pdecoder = new decoder()
-let event = {}
-event['encodedData'] = "AQrFTcN5cbRih8tpMhlPgSYyQDh4Q0KAgoCCgIIZ"
-const response = pdecoder.decodePacket(event['encodedData'], config.header)
-console.log(response);
+// let pdecoder = new decoder()
+// let event = {}
+// event['encodedData'] = "AQrFTcN5cbRih8tpMhlPgSYyQDh4Q0KAgoCCgIIZ"
+// const response = pdecoder.decodePacket(event['encodedData'], config.header)
+// console.log(response);
