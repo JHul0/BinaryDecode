@@ -35,13 +35,14 @@ header:
       type: rsr
       size: 1
 
+#temporary heartbeat config while solving float values
 heartbeat:
   fields:
     gpsw:
-      type: float
+      type: unknown
       size: 4
     gpsn:
-      type: float
+      type: unknown
       size: 4
     config:
       type: unknown
@@ -52,6 +53,24 @@ heartbeat:
     checksum:
       type: short 
       size: 2
+
+# heartbeat:
+#   fields:
+#     gpsw:
+#       type: float
+#       size: 4
+#     gpsn:
+#       type: float
+#       size: 4
+#     config:
+#       type: unknown
+#       size: 1
+#     status:
+#       type: char
+#       size: 1
+#     checksum:
+#       type: short 
+#       size: 2
 
 action:
   fields:

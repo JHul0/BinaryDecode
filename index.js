@@ -4,6 +4,7 @@ const { error } = require('console');
 
 exports.handler = async (event) => {
     let pdecoder = new decoder()
+    console.log("encodedData: " + event['encodedData'])
     const response = pdecoder.decodePacket(event['encodedData'], config.header)
     return response;
 };
@@ -37,6 +38,7 @@ class decoder{
         result = result.replaceAll('8086','2c')
         //this must be the last replace in order to avoid collisions
         result = result.replaceAll('8081','80')
+        console.log("hex after slip decode: " + result)
         return result
     }
 
@@ -84,6 +86,7 @@ class decoder{
     convertToHex(base64Packet){
         const buffer = Buffer.from(base64Packet, 'base64');
         let bufString = buffer.toString('hex');
+        console.log("hexData: " + bufString)
         //bufString = this.slipDecode(bufString)
         return bufString
     }
@@ -111,6 +114,7 @@ class decoder{
             i++
             position = finalPosition
         }
+        console.log("hexSlice: " + result)
         return [result, hexPacket.slice(position, hexPacket.length)]
     }
 
@@ -139,6 +143,19 @@ class decoder{
 //uncomment for local testing
 // let pdecoder = new decoder()
 // let event = {}
-// event['encodedData'] = "AQrFTcN5cbRih8tpMhlPgSYyQDh4Q0KAgoCCgIIZ"
+
+//note: data starting with:
+// AQ is a heartbeat
+// Ah is an action
+// Ay is devconfig
+
+//legacy event list with slip decoding
+//event['encodedData'] = "AQrFTcN5cbRih8tpMhlPgSYyQDh4Q0KAgoCCgIIZ"
+//event['encodedData'] = "AQrFTcN5cbSAgoCCgIKAgmJxYoCFMiRxgIKAgoCCgIKAgoCCgIKAgoCCgIKAgh0"
+
+//event list(no slip):
+// event['encodedData'] = "AhD5XzJqhuxjD6CkZBZTAAAAAAAAAAEAAAAAAAAAAQAf"
+
+// console.log("encodedData: " + event['encodedData'])
 // const response = pdecoder.decodePacket(event['encodedData'], config.header)
-// console.log(response);
+// console.log("decodedObject:\n", response);
