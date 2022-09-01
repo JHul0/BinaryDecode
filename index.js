@@ -122,6 +122,7 @@ class decoder{
         return Buffer.from(hexString, 'hex').toString('utf8')
     }
 
+    /*legacy implementation **flawed** remove this if no new errors with float handling happen.
     parseFloat(str, radix){
     var parts = str.split(".");
     if ( parts.length > 1 ){
@@ -129,6 +130,11 @@ class decoder{
     }
     return parseInt(parts[0], radix);
     }
+    */
+
+   parseFloat(str){
+    return Buffer(str,'hex').readFloatLE(0);
+   }
 
 
     formatMacID(hexString){
@@ -140,10 +146,6 @@ class decoder{
     }
 }
 
-//uncomment for local testing
-// let pdecoder = new decoder()
-// let event = {}
-
 //note: data starting with:
 // AQ is a heartbeat
 // Ah is an action
@@ -154,8 +156,12 @@ class decoder{
 //event['encodedData'] = "AQrFTcN5cbSAgoCCgIKAgmJxYoCFMiRxgIKAgoCCgIKAgoCCgIKAgoCCgIKAgh0"
 
 //event list(no slip):
-// event['encodedData'] = "AhD5XzJqhuxjD6CkZBZTAAAAAAAAAAEAAAAAAAAAAQAf"
+// event['encodedData'] = "AQrbilGGUPBjDWOKMhtT3kHpwlrs/kEAAAAZ"
 
+//uncomment for local testing
+
+// let pdecoder = new decoder()
+// let event = {}
 // console.log("encodedData: " + event['encodedData'])
 // const response = pdecoder.decodePacket(event['encodedData'], config.header)
 // console.log("decodedObject:\n", response);
