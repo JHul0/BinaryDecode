@@ -84,7 +84,7 @@ class decoder{
     convertToHex(base64Packet){
         const buffer = Buffer.from(base64Packet, 'base64');
         let bufString = buffer.toString('hex');
-        bufString = this.slipDecode(bufString)
+        //bufString = this.slipDecode(bufString)
         return bufString
     }
 
