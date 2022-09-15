@@ -194,12 +194,12 @@ class decoder{
 
 //uncomment following lines for local testing, replace hex string with the hex string you want to test
 
-let event = {}
-event['encodedData'] = "AyrbilGGUPBjGSWElhlTBAEHBzM3LjAwLjcyNC1QMEMuNzIwMDEx/wEzNTkyMDUxMDI1MDE3NzQBADk="
-let pdecoder = new decoder()
+// let event = {}
+// event['encodedData'] = "AyrbilGGUPBjGSWElhlTBAEHBzM3LjAwLjcyNC1QMEMuNzIwMDEx/wEzNTkyMDUxMDI1MDE3NzQBADk="
+// let pdecoder = new decoder()
 
-console.log("encodedData: " + event['encodedData'])
-const response = pdecoder.decodePacket(event['encodedData'], config.header)
-console.log("\ndecodedObject:\n", response);
+// console.log("encodedData: " + event['encodedData'])
+// const response = pdecoder.decodePacket(event['encodedData'], config.header)
+// console.log("\ndecodedObject:\n", response);
 
 /************End Local Testing****************/
