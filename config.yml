@@ -66,7 +66,7 @@ action:
       size: 2
     LTEversion: 
       type: string
-      size: 6 #this needs to be variable length
+      size: variable 
     switchStatus:
       type: int
       size: 1
@@ -93,11 +93,12 @@ devconfig:
       size: 2
     LTEversion: 
       type: string
-      size: variable #this needs to be variable length
+      size: variable
     switchStatus:
       type: int
       size: 1
-    # state:
+    # state not yet defined
+    # state: 
     #   type: unknown
     #   size: 1
     IMEI:
