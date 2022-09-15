@@ -125,14 +125,6 @@ class decoder{
         return str;
     }
 
-    convertToHex(base64Packet){
-        const buffer = Buffer.from(base64Packet, 'base64');
-        let bufString = buffer.toString('hex');
-        console.log("hexData: " + bufString)
-        //bufString = this.slipDecode(bufString)
-        return bufString
-    }
-
     parseFloat(str){
         return Buffer(str,'hex').readFloatLE(0);
     }
@@ -147,6 +139,15 @@ class decoder{
     /************End of Custom Type logic****************/
 
     /************Utilities****************/
+
+    convertToHex(base64Packet){
+        const buffer = Buffer.from(base64Packet, 'base64');
+        let bufString = buffer.toString('hex');
+        console.log("hexData: " + bufString)
+        //bufString = this.slipDecode(bufString)
+        return bufString
+    }
+
     getByteSize(hexPacket){
         return hexPacket.length/2
     }
