@@ -19,13 +19,14 @@ class decoder{
         this.packetStruct[4] = config.acceleration
         this.packetStruct[5] = config.userconfig
         this.packetStruct[6] = config.updatefw
+        this.terminator = 'ff'
     }
 
     decodePacket(base64Packet, headerConfig){
         let hexPacket = this.convertToHex(base64Packet)
         let [header, remainder] = this.decode(hexPacket, this.packetStruct[0])
         let [dataPacket, notAvailable] = this.decode(remainder, this.packetStruct[header["type"]])
-        header['heartbeat'] = dataPacket
+        header[Object.keys(config)[header["type"]]] = dataPacket
         return header
     }
 
@@ -72,15 +73,34 @@ class decoder{
             } else if (packetConfig['fields'][field]['type'] == 'short'){
                 iotPacket[field] = parseInt(packetSplitHex[i], 16)
                 i = i+1
+            } else if (packetConfig['fields'][field]['type'] == 'string'){
+                iotPacket[field] = this.hexToString(packetSplitHex[i])
+                i = i+1
+            } else if (packetConfig['fields'][field]['type'] == 'BLEversion'){
+                let rawVersionString = packetSplitHex[i]
+
+                let major = rawVersionString.slice(0, 2)
+                let minor = rawVersionString.slice(2, 4)
+                iotPacket[field] = parseInt(major)+"."+parseInt(minor)
+                i = i+1
             } else {
                 throw new Error('missed bytes in packet')
             }
+            console.log("\n" + field + ": " + iotPacket[field])
         }
         return [iotPacket, remainderPacket]
     }
 
     hexToFloat(hex){
         const buffer = Buffer.from(hex, 'hex')
+    }
+
+    hexToString(hex) {
+        var str = '';
+        for (var n = 0; n < hex.length; n += 2) {
+            str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+        }
+        return str;
     }
 
     convertToHex(base64Packet){
@@ -109,10 +129,22 @@ class decoder{
         let position = 0
         let i = 0
         for (let fieldName in packetConfig['fields']){
-            let finalPosition = position + packetConfig['fields'][fieldName]['size']*2
-            result[i] = hexPacket.slice(position, finalPosition)
-            i++
-            position = finalPosition
+            let finalPosition = packetConfig['fields'][fieldName]['size'];
+            if(Number.isInteger(finalPosition)){
+                finalPosition = position + packetConfig['fields'][fieldName]['size']*2
+                result[i] = hexPacket.slice(position, finalPosition)
+                i++
+                position = finalPosition
+            } else if(finalPosition = "variable"){
+                finalPosition = hexPacket.indexOf(this.terminator)
+                result[i] = hexPacket.slice(position, (finalPosition))
+                //the following line removes the terminator byte
+                hexPacket = hexPacket.slice(0, finalPosition-2) + hexPacket.slice(finalPosition)
+
+                packetConfig['fields'][fieldName]['size'] = (finalPosition-2)-position
+                i++
+                position = finalPosition
+            }
         }
         console.log("hexSlice: " + result)
         return [result, hexPacket.slice(position, hexPacket.length)]
@@ -121,16 +153,6 @@ class decoder{
     decodeString(hexString){
         return Buffer.from(hexString, 'hex').toString('utf8')
     }
-
-    /*legacy implementation **flawed** remove this if no new errors with float handling happen.
-    parseFloat(str, radix){
-    var parts = str.split(".");
-    if ( parts.length > 1 ){
-        return parseInt(parts[0], radix) + parseInt(parts[1], radix) / Math.pow(radix, parts[1].length);
-    }
-    return parseInt(parts[0], radix);
-    }
-    */
 
    parseFloat(str){
     return Buffer(str,'hex').readFloatLE(0);
@@ -152,16 +174,18 @@ class decoder{
 // Ay is devconfig
 
 //legacy event list with slip decoding
-//event['encodedData'] = "AQrFTcN5cbRih8tpMhlPgSYyQDh4Q0KAgoCCgIIZ"
-//event['encodedData'] = "AQrFTcN5cbSAgoCCgIKAgmJxYoCFMiRxgIKAgoCCgIKAgoCCgIKAgoCCgIKAgh0"
+//"AQrFTcN5cbRih8tpMhlPgSYyQDh4Q0KAgoCCgIIZ"
+//"AQrFTcN5cbSAgoCCgIKAgmJxYoCFMiRxgIKAgoCCgIKAgoCCgIKAgoCCgIKAgh0"
 
 //event list(no slip):
-// event['encodedData'] = "AQrbilGGUPBjDWOKMhtT3kHpwlrs/kEAAAAZ"
+//"AyrbilGGUPBjGSWElhlTBAEHBzM3LjAwLjcyNC1QMEMuNzIwMDEx/wEzNTkyMDUxMDI1MDE3NzQBADk="
 
-//uncomment for local testing
+//uncomment following lines for local testing, replace hex string with the hex string you want to test
 
-// let pdecoder = new decoder()
-// let event = {}
-// console.log("encodedData: " + event['encodedData'])
-// const response = pdecoder.decodePacket(event['encodedData'], config.header)
-// console.log("decodedObject:\n", response);
+//let event = {}
+//event['encodedData'] = "AyrbilGGUPBjGSWElhlTBAEHBzM3LjAwLjcyNC1QMEMuNzIwMDEx/wEzNTkyMDUxMDI1MDE3NzQBADk="
+//let pdecoder = new decoder()
+
+//console.log("encodedData: " + event['encodedData'])
+//const response = pdecoder.decodePacket(event['encodedData'], config.header)
+//console.log("\ndecodedObject:\n", response);

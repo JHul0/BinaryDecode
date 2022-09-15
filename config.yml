@@ -61,6 +61,9 @@ action:
     manufacturer: 
       type: int
       size: 1
+    BLEversion:
+      type: short
+      size: 2
     LTEversion: 
       type: string
       size: 6 #this needs to be variable length
@@ -85,18 +88,24 @@ devconfig:
     manufacturer: 
       type: int
       size: 1
+    BLEversion:
+      type: BLEversion
+      size: 2
     LTEversion: 
       type: string
-      size: 6 #this needs to be variable length
+      size: variable #this needs to be variable length
     switchStatus:
       type: int
       size: 1
-    state:
-      type: unknown
-      size: 1
+    # state:
+    #   type: unknown
+    #   size: 1
     IMEI:
       type: string
-      size: 16
+      size: 15
+    MemAlign: #not currently used, mem alignment byte of IMEI field
+      type: unknown
+      size: 1
     checksum:
       type: short
       size: 2
