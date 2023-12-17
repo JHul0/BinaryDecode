@@ -78,7 +78,7 @@ class decoder{
                 iotPacket[field] = this.formatMacID(packetSplitHex[i])
                 i = i+1
             } else if (packetConfig['fields'][field]['type'] == 'timestamp'){
-                iotPacket[field] = new Date(parseInt(packetSplitHex[i], 16))
+                iotPacket[field] = new Date(parseInt(packetSplitHex[i], 16)*1000)
                 i = i+1
             } else if (packetConfig['fields'][field]['type'] == 'rsr'){
                 iotPacket[field] = parseInt(packetSplitHex[i], 16)*(-1/2)
@@ -195,12 +195,12 @@ class decoder{
 
 //uncomment following lines for local testing, replace hex string with the hex string you want to test
 
-// let event = {}
-// event['encodedData'] = "AyrbilGGUPBjGSWElhlTBAEHBzM3LjAwLjcyNC1QMEMuNzIwMDEx/wEzNTkyMDUxMDI1MDE3NzQBADk="
-// let pdecoder = new decoder()
+let event = {}
+event['encodedData'] = "AyrbilGGUPBjGSWElhlTBAEHBzM3LjAwLjcyNC1QMEMuNzIwMDEx/wEzNTkyMDUxMDI1MDE3NzQBADk="
+let pdecoder = new decoder()
 
-// console.log("encodedData: " + event['encodedData'])
-// const response = pdecoder.decodePacket(event['encodedData'], config.header)
-// console.log("\ndecodedObject:\n", response);
+console.log("encodedData: " + event['encodedData'])
+const response = pdecoder.decodePacket(event['encodedData'], config.header)
+console.log("\ndecodedObject:\n", response);
 
 /************End Local Testing****************/
